@@ -1,8 +1,10 @@
 const express = require('express');
 const healthController = require('../controllers/health');
 
+const authRoutes = require('./auth');
+const taskRoutes = require('./tasks');
+
 const router = express.Router();
-// Health endpoint
 
 /**
  * @swagger
@@ -32,4 +34,19 @@ const router = express.Router();
  */
 router.get('/', healthController.check.bind(healthController));
 
+/**
+ * @swagger
+ * /healthz:
+ *   get:
+ *     summary: Liveness probe (health check)
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.get('/healthz', healthController.check.bind(healthController));
+
+router.use('/auth', authRoutes);
+router.use('/tasks', taskRoutes);
+
 module.exports = router;
+
